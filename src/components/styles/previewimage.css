@@ -1,0 +1,41 @@
+/* previewimage.css */
+
+.preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+
+.image-preview {
+  margin-right: 15px;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+  padding: 10px;
+}
+
+.image-preview img {
+  width: 300px;
+}
+
+.details-preview {
+  flex-grow: 1;
+  padding: 10px;
+  background-color: #f5f5f5; /* Light background color for details preview */
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.5); /* Box shadow for separation effect */
+  border-radius: 8px; /* Optional border-radius for rounded corners */
+}
+
+.details-preview p {
+  margin: 0;
+  font-size: 16px;
+  color: #000; /* Set font color to black or a suitable contrasting color */
+}
+
+.close-button {
+  cursor: pointer;
+  font-size: 24px;
+  color: #2980b9;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}

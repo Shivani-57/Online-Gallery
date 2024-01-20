@@ -1,20 +1,40 @@
 // Modal.js
 import React, { useState } from 'react';
 import Modal from "react-modal";
+import "./styles/uploadimage.css"
+
 
 const UploadModal = ({ isUploadOpen,  setUploadModalClose, onSubmit }) => {
   const [image, setImage] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    setImage(file);
+    const sendData = new FormData();
+    const preset_key="lxf6gtdp-gallery"
+    const cloud_name="dy61b1jqy"
+		sendData.append("file", file);
+		sendData.append(
+			"upload_preset",preset_key,
+		);
+		sendData.append("cloud_name", cloud_name);
+		const res = await fetch(
+			`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+			{
+				method: "post",
+				body: sendData,
+			}
+		);
+		const { secure_url } = await res.json();
+    console.log(secure_url)
+    setImage(secure_url);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ image, title, description });
+    
+    onSubmit({ imagelink:image, title, description });
     setUploadModalClose(false)
   };
 
@@ -85,7 +105,7 @@ const UploadModal = ({ isUploadOpen,  setUploadModalClose, onSubmit }) => {
           </div>
           <div>
             <button type="submit">Submit</button>
-            <button onClick={() => {
+            <button className="cancel"onClick={() => {
 						setUploadModalClose(false);
 					}}>cancel</button>
           </div>

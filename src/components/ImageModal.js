@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Modal from "react-modal";
-
-const ImageModal = ({isImageOpen, setImageModalClose,url})=> {
+import "./styles/previewimage.css"
+const ImageModal = ({isImageOpen, setImageModalClose,image,count})=> {
+    console.log("From Image MOdal" , image)
   return (
     <Modal style={{
         overlay: {
@@ -15,14 +16,16 @@ const ImageModal = ({isImageOpen, setImageModalClose,url})=> {
         content: {
             position: "absolute",
             border: "1px solid #ccc",
-            background: "rgba(255, 255, 255, 0.5)",
+            background: "rgba(255, 255, 255, 1)",
             overflow: "hidden",
-            left:"32%",
+            left:"40%",
             borderRadius: "4px",
             outline: "none",
             padding: "15px",
             border:"none",
             width: "fit-content",
+            height:"fit-content"
+            
         },
     }}
 			isOpen={isImageOpen}
@@ -30,12 +33,22 @@ const ImageModal = ({isImageOpen, setImageModalClose,url})=> {
 				setImageModalClose(false);
 			}}
 		>
-			<div onClick={() => {
+			<div className='close-button' onClick={() => {
 						setImageModalClose(false);
 					}}>
 				&times;
 			</div>
-            <div>{url}</div>
+            <div className='preview'>
+            <div className='image-preview'>
+            <img src={image.imagelink} alt={image.title} width="300px"></img>
+            </div>
+            <div className='details-preview'>
+                <p><strong>Title </strong>: {image.title}</p>
+                <p><strong>Description</strong> : {image.description}</p>
+                <p><strong>Image Viewed</strong> : {image.count}</p>
+
+            </div>
+            </div>
            
 			
 		</Modal>

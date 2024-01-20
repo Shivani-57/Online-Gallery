@@ -1,27 +1,64 @@
 // SignupForm.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import "./styles/SignupForm.css"
+import errorComponent from './errorComponent';
+import ErrorComponent from './errorComponent';
+
 
 
 const SignupForm = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [user, setUser] = useState({
+        username: "",
+        email:"",
+        password:"",
+  });
+  
+  const handleInput=(e) => {
+    let name=e.target.name;
+    let value = e.target.value;
+    console.log(name,value)
+    setUser(
+     {
+      ...user,
+      [name]: value,
+     }
+    )
+  }
+
+ 
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    console.log(user);
 
-    // Validate the form fields before submitting
-    if (!username || !email || !password) {
-      alert('Please fill in all the required fields.');
-      return;
+    try{
+      const response = await fetch('http://localhost:5000/signup',{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(user)
+    })
+    // console.log(response)
+    if(await response.ok){
+      setUser({ username: "", email:"", password:"",})
+      navigate("/image-page")
     }
-
-    // Add your signup logic here
-    console.log('Signup submitted:', { username, email, password });
+    }
+    catch(error){
+      ErrorComponent.setErrorMessage(error.response?.data?.message || 'An error occurred');
+      console.log("register", error)
+    }
   };
+
+
+ 
 
   return (
     <div className='signup-div'>
@@ -31,8 +68,9 @@ const SignupForm = () => {
         <input className="signup-input"
           type="text"
           id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          name='username'
+          value={user.username}
+          onChange={handleInput}
           required
         />
       </div>
@@ -41,8 +79,9 @@ const SignupForm = () => {
         <input className="signup-input"
           type="email"
           id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          value={user.email}
+          onChange={handleInput}
           required
         />
       </div>
@@ -51,8 +90,9 @@ const SignupForm = () => {
         <input className="signup-input"
           type="password"
           id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name='password'
+          value={user.password}
+          onChange={handleInput}
           required
         />
       </div>
