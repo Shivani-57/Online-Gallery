@@ -122,6 +122,7 @@ return (
 {images.map((value, index) => (
         // console.log(index)
           <div key={index}>
+            <h4>Image {index+1}</h4>
           <img
               src={value.imagelink}
               alt={value.title}
