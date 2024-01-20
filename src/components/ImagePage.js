@@ -122,7 +122,6 @@ return (
 {images.map((value, index) => (
         // console.log(index)
           <div key={index}>
-          <h2>{index}</h2>
           <img
               src={value.imagelink}
               alt={value.title}
